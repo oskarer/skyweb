@@ -39,4 +39,3 @@ var Poll = (function () {
     return Poll;
 })();
 module.exports = Poll;
-//# sourceMappingURL=poll.js.map

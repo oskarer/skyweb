@@ -19,4 +19,3 @@ skyweb.messagesCallback = function (messages) {
         }
     });
 };
-//# sourceMappingURL=demo.js.map

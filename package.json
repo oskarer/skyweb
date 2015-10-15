@@ -13,5 +13,13 @@
     "js-sha256": "^0.3.0",
     "request": "2.61",
     "tough-cookie": "^2.0.0"
+  },
+  "devDependencies": {
+    "tsd": "^0.6.5",
+    "typescript": "^1.6.2"
+  },
+  "scripts": {
+    "tsd": "tsd install",
+    "build": "tsc"
   }
 }

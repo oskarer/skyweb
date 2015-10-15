@@ -27,4 +27,3 @@ var ContactsService = (function () {
     return ContactsService;
 })();
 module.exports = ContactsService;
-//# sourceMappingURL=contacts_service.js.map

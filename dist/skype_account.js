@@ -78,4 +78,3 @@ var SkypeAccount = (function () {
     return SkypeAccount;
 })();
 module.exports = SkypeAccount;
-//# sourceMappingURL=skype_account.js.map

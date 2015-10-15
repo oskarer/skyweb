@@ -31,4 +31,3 @@ var MessageService = (function () {
     return MessageService;
 })();
 module.exports = MessageService;
-//# sourceMappingURL=message.js.map

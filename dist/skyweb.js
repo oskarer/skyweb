@@ -31,4 +31,3 @@ var Skyweb = (function () {
     return Skyweb;
 })();
 module.exports = Skyweb;
-//# sourceMappingURL=skyweb.js.map
