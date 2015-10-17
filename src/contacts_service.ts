@@ -1,5 +1,5 @@
-/// <reference path='./typings/node/node.d.ts' />
-/// <reference path='./typings/request/request.d.ts' />
+/// <reference path='../typings/node/node.d.ts' />
+/// <reference path='../typings/request/request.d.ts' />
 import request = require('request');
 import Consts = require('./consts');
 import SkypeAccount = require('./skype_account');
@@ -33,5 +33,3 @@ class ContactsService {
 }
 
 export = ContactsService;
-
-

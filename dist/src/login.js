@@ -52,8 +52,7 @@ var Login = (function () {
                         skypeAccount.skypeToken = $('input[name="skypetoken"]').val();
                         skypeAccount.skypeTokenExpiresIn = parseInt($('input[name="expires_in"]').val());
                         if (skypeAccount.skypeToken && skypeAccount.skypeTokenExpiresIn) {
-                            resolve(skypeAccount);
-                            console.log(_this.jar.toJSON());
+                            resolve({ skypeAccount: skypeAccount, cookie: _this.jar.toJSON() });
                         }
                         else {
                             Utils.throwError('Failed to get skypetoken. Username or password is incorrect OR you\'ve' +

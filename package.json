@@ -12,14 +12,17 @@
     "cheerio": "^0.19.0",
     "js-sha256": "^0.3.0",
     "request": "2.61",
+    "request-persistent": "^1.0.1",
     "tough-cookie": "^2.0.0"
   },
   "devDependencies": {
     "tsd": "^0.6.5",
-    "typescript": "^1.6.2"
+    "typescript": "^1.6.2",
+    "typescript-watcher": "0.0.4"
   },
   "scripts": {
     "tsd": "tsd install",
-    "build": "tsc"
+    "build": "tsc",
+    "watch": "tscwatch watch src dist"
   }
 }

@@ -1,9 +1,10 @@
-/// <reference path='./typings/node/node.d.ts' />
-/// <reference path='./typings/form-data/form-data.d.ts' />
-/// <reference path='./typings/cheerio/cheerio.d.ts' />
-/// <reference path='./typings/request/request.d.ts' />
-/// <reference path='./typings/es6-promise/es6-promise.d.ts' />
+/// <reference path='../typings/node/node.d.ts' />
+/// <reference path='../typings/form-data/form-data.d.ts' />
+/// <reference path='../typings/cheerio/cheerio.d.ts' />
+/// <reference path='../typings/request/request.d.ts' />
+/// <reference path='../typings/es6-promise/es6-promise.d.ts' />
 import request = require('request');
+require('request-persistent')(request);
 import cheerio = require('cheerio');
 import Utils = require('./utils');
 import SkypeAccount = require('./skype_account');
@@ -16,9 +17,11 @@ import {CookieJar} from "request";
 
 class Login {
     private requestWithJar;
+    private jar;
 
     constructor(cookieJar:CookieJar) {
         this.requestWithJar = request.defaults({jar: cookieJar});
+        this.jar = cookieJar;
     }
 
     public doLogin(skypeAccount:SkypeAccount) {
@@ -43,7 +46,7 @@ class Login {
                 if (!pie || !etm) {
                     Utils.throwError('Failed to find pie or etm.');
                 }
-                
+
                 var postParams = {
                     url: Consts.SKYPEWEB_LOGIN_URL,
                     form: {
@@ -55,6 +58,9 @@ class Login {
                         js_time: Utils.getCurrentTime()
                     }
                 };
+
+                console.log(request.jar())
+                // console.log(this.jar.toJSON())
                 //auth step
                 this.requestWithJar.post(postParams, (error, response, body) => {
                     if (!error && response.statusCode == 200) {
@@ -63,6 +69,7 @@ class Login {
                         skypeAccount.skypeTokenExpiresIn = parseInt($('input[name="expires_in"]').val());//86400 by default
                         if (skypeAccount.skypeToken && skypeAccount.skypeTokenExpiresIn){
                             resolve(skypeAccount);
+                            console.log(this.jar.toJSON())
                         } else {
                             Utils.throwError('Failed to get skypetoken. Username or password is incorrect OR you\'ve' +
                                 ' hit a CAPTCHA wall.' + $('.message_error').text());
@@ -70,6 +77,7 @@ class Login {
                     } else {
                         Utils.throwError('Failed to get skypetoken');
                     }
+
                 });
             } else {
                 Utils.throwError('Failed to get pie and etm. Login failed.');
@@ -91,7 +99,7 @@ class Login {
             //now lets try retrieve registration token
             if (!error && response.statusCode === 201 || response.statusCode === 301) {
                 var locationHeader = response.headers['location'];
-                //expecting something like this 'registrationToken=someSting; expires=someNumber; endpointId={someString}' 
+                //expecting something like this 'registrationToken=someSting; expires=someNumber; endpointId={someString}'
                 var registrationTokenHeader = response.headers['set-registrationtoken'];
                 var location = url.parse(locationHeader);
                 if (location.host !== skypeAccount.messagesHost) { //mainly when 301, but sometimes when 201
@@ -129,7 +137,7 @@ class Login {
             }
         });
     }
-    
+
     private subscribeToResources(skypeAccount:SkypeAccount, resolve, reject) {
         var interestedResources = [
             '/v1/threads/ALL',
@@ -140,7 +148,7 @@ class Login {
         var requestBody = JSON.stringify({
             interestedResources: interestedResources,
             template: 'raw',
-            channelType: 'httpLongPoll'//todo web sockets maybe ? 
+            channelType: 'httpLongPoll'//todo web sockets maybe ?
         });
 
         this.requestWithJar.post(Consts.SKYPEWEB_HTTPS + skypeAccount.messagesHost + '/v1/users/ME/endpoints/SELF/subscriptions', {

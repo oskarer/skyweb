@@ -7,11 +7,13 @@ if (!username || !password) {
 }
 
 var skyweb = new Skyweb();
-skyweb.login(username, password).then((skypeAccount) => {
+skyweb.login(username, password).then((response) => {
+    console.log(response)
     console.log('Skyweb is initialized now');
     console.log('Here is some info about you:' + JSON.stringify(skyweb.skypeAccount.selfInfo, null, 2));
-    console.log('Your contacts : ' + JSON.stringify(skyweb.contactsService.contacts, null, 2));
+    //console.log('Your contacts : ' + JSON.stringify(skyweb.contactsService.contacts, null, 2));
 });
+/*
 skyweb.messagesCallback = (messages) => {
     messages.forEach((message)=> {
         if (message.resource.from.indexOf(username) === -1 && message.resource.messagetype !== 'Control/Typing' && message.resource.messagetype !== 'Control/ClearTyping') {
@@ -20,4 +22,4 @@ skyweb.messagesCallback = (messages) => {
             skyweb.sendMessage(conversationId, message.resource.content + '. Cats will rule the World');
         }
     });
-};
+};*/
